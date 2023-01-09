@@ -1,25 +1,25 @@
-const calculator = document.querySelector('.calculator-grid');
-const output = document.querySelector('.output');
-const buttons = calculator.querySelectorAll('button');
+const calculator = document.querySelector(".calculator-grid");
+const output = document.querySelector(".output");
+const buttons = calculator.querySelectorAll("button");
 
-let previousOperand = '';
-let currentOperand = '';
+let previousOperand = "";
+let currentOperand = "";
 let operation = undefined;
 
 let updateDisplay = () => {
-  output.querySelector('[data-previous-operand]').textContent = previousOperand;
-  output.querySelector('[data-current-operand]').textContent = currentOperand;
-}
+  output.querySelector("[data-previous-operand]").textContent = previousOperand;
+  output.querySelector("[data-current-operand]").textContent = currentOperand;
+};
 
 let clear = () => {
-  previousOperand = '';
-  currentOperand = '';
+  previousOperand = "";
+  currentOperand = "";
   operation = undefined;
-}
+};
 
 let deleteDigit = () => {
   currentOperand = currentOperand.slice(0, -1);
-}
+};
 
 let performOperation = (operation) => {
   let result;
@@ -27,16 +27,16 @@ let performOperation = (operation) => {
   const current = parseFloat(currentOperand);
   if (isNaN(prev) || isNaN(current)) return;
   switch (operation) {
-    case '+':
+    case "+":
       result = prev + current;
       break;
-    case '-':
+    case "-":
       result = prev - current;
       break;
-    case '*':
+    case "*":
       result = prev * current;
       break;
-    case '÷':
+    case "÷":
       result = prev / current;
       break;
     default:
@@ -44,41 +44,42 @@ let performOperation = (operation) => {
   }
   currentOperand = result;
   operation = undefined;
-  previousOperand = '';
-}
+  previousOperand = "";
+};
 
-buttons.forEach(button => {
-  button.addEventListener('click', event => {
+buttons.forEach((button) => {
+  button.addEventListener("click", (event) => {
     const target = event.target;
-    if (target.matches('[data-all-clear]')) {
+    if (target.matches("[data-all-clear]")) {
       clear();
       updateDisplay();
       return;
     }
-    if (target.matches('[data-delete]')) {
+    if (target.matches("[data-delete]")) {
       deleteDigit();
       updateDisplay();
       return;
     }
-    if (target.matches('[data-number], [data-decimal]')) {
-      if (currentOperand.includes('.') && target.matches('[data-decimal]')) return;
+    if (target.matches("[data-number], [data-decimal]")) {
+      if (currentOperand.includes(".") && target.matches("[data-decimal]"))
+        return;
       currentOperand += target.textContent;
       updateDisplay();
       return;
     }
-    if (target.matches('[data-operation]')) {
-      if (currentOperand === '') return;
-      if (previousOperand !== '') {
+    if (target.matches("[data-operation]")) {
+      if (currentOperand === "") return;
+      if (previousOperand !== "") {
         performOperation(operation);
       }
       operation = target.textContent;
       previousOperand = currentOperand;
-      currentOperand = '';
+      currentOperand = "";
       updateDisplay();
       return;
     }
-    if (target.matches('[data-equals]')) {
-      if (currentOperand === '' || previousOperand === '') return;
+    if (target.matches("[data-equals]")) {
+      if (currentOperand === "" || previousOperand === "") return;
       performOperation(operation);
       updateDisplay();
       return;
